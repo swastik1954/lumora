@@ -1,0 +1,351 @@
+.chat {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow-y: auto;
+    background: transparent;
+    scroll-behavior: smooth;
+}
+
+.chats {
+    width: min(790px, calc(100% - 40px));
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+    margin: 0 auto;
+    padding: 35px 0 30px;
+}
+
+.greeting {
+    width: 100%;
+    margin: auto auto 20px;
+    padding: 0 20px;
+    color: #f4f7ff;
+    font-size: clamp(27px, 4vw, 39px);
+    font-weight: 650;
+    letter-spacing: -1.5px;
+    text-align: center;
+}
+
+.greeting::before {
+    content: "✦";
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 22px;
+    border: 1px solid rgba(113, 166, 255, 0.35);
+    border-radius: 18px;
+    background: linear-gradient(145deg, #276bd7, #102c5d);
+    box-shadow: 0 0 35px rgba(44, 120, 255, 0.3);
+    color: white;
+    font-size: 26px;
+}
+
+.userDiv {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.userMessage {
+    max-width: min(75%, 590px);
+    padding: 13px 18px;
+    border: 1px solid rgba(109, 159, 255, 0.2);
+    border-radius: 18px 18px 5px 18px;
+    background: linear-gradient(
+        135deg,
+        rgba(37, 91, 175, 0.75),
+        rgba(26, 61, 119, 0.8)
+    );
+    box-shadow: 0 7px 24px rgba(0, 0, 0, 0.15);
+    color: #f4f7ff;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.gptDiv {
+    width: 100%;
+    color: #dce4f2;
+    font-size: 14px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.gptDiv p {
+    margin: 0 0 13px;
+}
+
+.gptDiv h1,
+.gptDiv h2,
+.gptDiv h3 {
+    margin: 20px 0 10px;
+    color: #f2f6ff;
+    line-height: 1.35;
+}
+
+.gptDiv h1 {
+    font-size: 23px;
+}
+
+.gptDiv h2 {
+    font-size: 19px;
+}
+
+.gptDiv h3 {
+    font-size: 16px;
+}
+
+.gptDiv ul,
+.gptDiv ol {
+    margin: 10px 0 15px;
+    padding-left: 24px;
+}
+
+.gptDiv li {
+    margin: 5px 0;
+    padding-left: 3px;
+}
+
+.gptDiv strong {
+    color: #ffffff;
+    font-weight: 650;
+}
+
+.gptDiv a {
+    color: #80b5ff;
+    text-decoration: none;
+}
+
+.gptDiv a:hover {
+    text-decoration: underline;
+}
+
+.gptDiv blockquote {
+    margin: 12px 0;
+    padding: 9px 15px;
+    border-left: 3px solid #478cff;
+    background: rgba(255, 255, 255, 0.045);
+    color: #b8c6dc;
+}
+
+.gptDiv pre {
+    max-width: 100%;
+    margin: 14px 0;
+    padding: 17px;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 12px;
+    background: rgba(5, 9, 17, 0.88);
+}
+
+.gptDiv code {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 12.5px;
+}
+
+.gptDiv :not(pre) > code {
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: rgba(105, 145, 205, 0.15);
+    color: #a9ccff;
+}
+
+.gptDiv table {
+    width: 100%;
+    margin: 15px 0;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.gptDiv th,
+.gptDiv td {
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: left;
+}
+
+.gptDiv th {
+    background: rgba(65, 112, 190, 0.18);
+    color: #fff;
+}
+
+.latestReply {
+    animation: replyFade 0.3s ease;
+}
+
+@keyframes replyFade {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat::-webkit-scrollbar,
+.historyContainer::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat::-webkit-scrollbar-thumb,
+.historyContainer::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(150, 170, 205, 0.22);
+}
+
+@media (max-width: 700px) {
+    .chats {
+        width: calc(100% - 28px);
+        padding-top: 25px;
+    }
+
+    .userMessage {
+        max-width: 88%;
+    }
+}
+
+/* Welcome screen */
+.welcomeScreen {
+    width: min(720px, calc(100% - 36px));
+    margin: auto;
+    padding: 35px 0 25px;
+    text-align: center;
+    animation: welcomeAppear 0.6s ease;
+}
+
+.welcomeIcon {
+    width: 64px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 25px;
+    border: 1px solid rgba(120, 170, 255, 0.35);
+    border-radius: 20px;
+    background: linear-gradient(145deg, #347df0, #173b7b);
+    box-shadow:
+        0 0 35px rgba(44, 119, 255, 0.3),
+        inset 0 1px rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 27px;
+}
+
+.welcomeScreen h1 {
+    color: #f4f7ff;
+    font-size: clamp(27px, 4vw, 39px);
+    font-weight: 650;
+    letter-spacing: -1.5px;
+}
+
+.welcomeSubtitle {
+    margin-top: 12px;
+    color: #8d9bb4;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.suggestionGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 38px;
+}
+
+.suggestionCard {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 16px;
+    border: 1px solid rgba(135, 164, 213, 0.13);
+    border-radius: 14px;
+    background: rgba(19, 28, 44, 0.62);
+    color: #e8efff;
+    text-align: left;
+    backdrop-filter: blur(12px);
+    transition: 0.25s ease;
+}
+
+.suggestionCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(93, 151, 255, 0.45);
+    background: rgba(35, 57, 91, 0.65);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.suggestionIcon {
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: rgba(58, 119, 218, 0.16);
+    color: #82b4ff;
+    font-size: 15px;
+}
+
+.suggestionText {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.suggestionText strong {
+    color: #eaf0ff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.suggestionText small {
+    color: #8492aa;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.suggestionArrow {
+    margin-left: auto;
+    color: #687d9f;
+    font-size: 11px;
+}
+
+@keyframes welcomeAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .suggestionGrid {
+        grid-template-columns: 1fr;
+        margin-top: 25px;
+    }
+
+    .welcomeScreen {
+        padding-top: 25px;
+    }
+}
+.sidebarBrandIcon,
+.logoMark,
+.welcomeIcon {
+    color: #ffffff;
+}
+
+.sidebarBrandIcon svg,
+.logoMark svg,
+.welcomeIcon svg {
+    display: block;
+    color: #ffffff;
+}

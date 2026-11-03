@@ -1,0 +1,362 @@
+
+/* =========================================
+   MAIN CHAT WINDOW
+========================================= */
+
+.chatWindow {
+    position: relative;
+    isolation: isolate;
+    flex: 1;
+    min-width: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 45%,
+            rgba(26, 78, 160, 0.20),
+            transparent 55%
+        ),
+        radial-gradient(
+            ellipse at 80% 10%,
+            rgba(42, 83, 160, 0.14),
+            transparent 40%
+        ),
+        #090c13;
+}
+
+/* Subtle background grid */
+
+.chatWindow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.012) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.012) 1px,
+            transparent 1px
+        );
+
+    background-size: 48px 48px;
+
+    mask-image: linear-gradient(
+        to bottom,
+        black,
+        transparent 85%
+    );
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.navbar {
+    height: 66px;
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+    background: rgba(9, 12, 19, 0.58);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    z-index: 4;
+}
+
+.navbarLogo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #f1f5ff;
+    font-size: 17px;
+    font-weight: 650;
+    letter-spacing: -0.4px;
+}
+
+.logoMark {
+    width: 31px;
+    height: 31px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(112, 164, 255, 0.3);
+    border-radius: 10px;
+
+    background: linear-gradient(
+        145deg,
+        #2869d9,
+        #14366e
+    );
+
+    box-shadow: 0 0 18px rgba(45, 117, 255, 0.25);
+
+    color: white;
+}
+
+.navbarLogo i {
+    margin-left: 3px;
+    color: #8795ad;
+    font-size: 11px;
+}
+
+/* =========================================
+   USER PROFILE BUTTON
+========================================= */
+
+.userIconDiv {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #dce7ff;
+
+    transition: 0.2s ease;
+}
+
+.userIconDiv:hover {
+    border-color: rgba(105, 158, 255, 0.5);
+    background: rgba(65, 119, 210, 0.2);
+}
+
+.userIcon {
+    font-size: 14px;
+}
+
+/* =========================================
+   PROFILE DROPDOWN
+========================================= */
+
+.dropDown {
+    position: absolute;
+    top: 57px;
+    right: 25px;
+
+    width: 190px;
+    padding: 7px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 13px;
+
+    background: rgba(18, 23, 34, 0.96);
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+
+    backdrop-filter: blur(18px);
+
+    z-index: 10;
+}
+
+.dropDownItem {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 11px;
+
+    border-radius: 8px;
+
+    color: #c6d0e2;
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.dropDownItem:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loader {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+.chatError {
+    width: min(760px, calc(100% - 36px));
+
+    margin: 8px auto;
+    padding: 11px 14px;
+
+    border: 1px solid rgba(255, 100, 100, 0.25);
+    border-radius: 10px;
+
+    background: rgba(120, 30, 30, 0.2);
+
+    color: #ffaaaa;
+    font-size: 13px;
+}
+
+/* =========================================
+   CHAT INPUT CONTAINER
+========================================= */
+
+.chatInput {
+    width: min(850px, calc(100% - 48px));
+
+    margin: 0 auto;
+    padding: 12px 0 14px;
+
+    flex-shrink: 0;
+}
+
+/* =========================================
+   INPUT BOX
+========================================= */
+
+.inputBox {
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 9px 12px 9px 21px;
+
+    border: 1px solid rgba(128, 164, 226, 0.24);
+    border-radius: 19px;
+
+    background: rgba(18, 26, 42, 0.78);
+
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.025),
+        0 12px 45px rgba(0, 0, 0, 0.25),
+        0 0 35px rgba(35, 105, 220, 0.12);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    transition: 0.25s ease;
+}
+
+.inputBox:focus-within {
+    border-color: rgba(89, 151, 255, 0.65);
+
+    box-shadow:
+        0 0 0 3px rgba(63, 128, 235, 0.1),
+        0 0 35px rgba(42, 112, 235, 0.2);
+}
+
+.inputBox input {
+    flex: 1;
+    min-width: 0;
+    height: 43px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #f2f5fc;
+    font-size: 14px;
+}
+
+.inputBox input::placeholder {
+    color: #7f8ba2;
+}
+
+/* =========================================
+   SEND BUTTON
+========================================= */
+
+#submit {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border: none;
+    border-radius: 13px;
+
+    background: linear-gradient(
+        145deg,
+        #3989ff,
+        #1856c5
+    );
+
+    box-shadow: 0 4px 18px rgba(39, 112, 235, 0.3);
+
+    color: white;
+
+    transition: 0.2s ease;
+}
+
+#submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 23px rgba(39, 112, 235, 0.45);
+}
+
+#submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* =========================================
+   FOOTER INFORMATION
+========================================= */
+
+.info {
+    padding: 11px 5px 0;
+
+    color: #69758c;
+    font-size: 10px;
+    text-align: center;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 700px) {
+    .chatWindow {
+        height: auto;
+        min-height: 0;
+        flex: 1;
+    }
+
+    .navbar {
+        padding: 0 16px;
+    }
+
+    .chatInput {
+        width: calc(100% - 24px);
+    }
+}
