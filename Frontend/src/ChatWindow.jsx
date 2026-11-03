@@ -8,7 +8,7 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState } from "react";
 import { ScaleLoader } from "react-spinners";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+const API_URL = import.meta.env.VITE_API_URL || "https://lumora-backend-lmun.onrender.com";
 
 function ChatWindow() {
     const {
