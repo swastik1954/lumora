@@ -1,13 +1,28 @@
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+    background: #080b12;
+}
+
 .app {
     display: flex;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     background: #080b12;
     color: #edf2ff;
@@ -27,14 +42,9 @@ button {
     background: rgba(65, 137, 255, 0.35);
 }
 
-@media (max-width: 700px) {
-    .app {
-        flex-direction: column;
-    }
-}
-
 .authLoadingScreen {
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -54,4 +64,16 @@ button {
 
 .authLoadingScreen p {
     margin: 0;
+}
+
+@media (max-width: 700px) {
+    .app {
+        position: relative;
+        flex-direction: row;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+    }
 }

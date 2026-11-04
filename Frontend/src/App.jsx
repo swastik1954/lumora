@@ -15,6 +15,9 @@ function App() {
     const [authLoading, setAuthLoading] = useState(true);
     const [showUpgrade, setShowUpgrade] = useState(false);
 
+    // Mobile sidebar state
+    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
     const [prompt, setPrompt] = useState("");
     const [reply, setReply] = useState(null);
     const [currThreadId, setCurrThreadId] = useState(() => uuidv4());
@@ -100,12 +103,12 @@ function App() {
         setNewChat(true);
         setLoadingThreads(true);
         setShowUpgrade(false);
+        setMobileSidebarOpen(false);
 
         fetchThreads();
     };
 
     // Called after upgrading a guest account.
-    // Keep the existing conversations and current chat intact.
     const handleUpgradeComplete = async (updatedUser) => {
         setUser(updatedUser);
         setShowUpgrade(false);
@@ -130,6 +133,7 @@ function App() {
             setCurrThreadId(uuidv4());
             setNewChat(true);
             setShowUpgrade(false);
+            setMobileSidebarOpen(false);
             setError(null);
         }
     };
@@ -141,6 +145,7 @@ function App() {
         setPrompt("");
         setReply(null);
         setNewChat(true);
+        setMobileSidebarOpen(false);
     }, []);
 
     // Open account upgrade screen.
@@ -213,8 +218,14 @@ function App() {
     return (
         <div className="app">
             <MyContext.Provider value={providerValues}>
-                <Sidebar />
-                <ChatWindow />
+                <Sidebar
+                    isOpen={mobileSidebarOpen}
+                    onClose={() => setMobileSidebarOpen(false)}
+                />
+
+                <ChatWindow
+                    onMenuClick={() => setMobileSidebarOpen(true)}
+                />
             </MyContext.Provider>
         </div>
     );

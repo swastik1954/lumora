@@ -685,3 +685,96 @@ button.dropDownItem:hover {
         padding-right: 18px;
     }
 }
+
+/* Mobile navigation button */
+.mobileMenuButton {
+    display: none;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #e5edff;
+    font-size: 17px;
+}
+
+@media (max-width: 700px) {
+    .chatWindow {
+        width: 100%;
+        min-width: 0;
+        height: 100dvh;
+        min-height: 0;
+        flex: 1;
+    }
+
+    .navbar {
+        height: 58px;
+        min-height: 58px;
+        padding: 0 13px;
+        gap: 10px;
+    }
+
+    .mobileMenuButton {
+        display: grid;
+    }
+
+    .navbarLogo {
+        flex: 1;
+        font-size: 16px;
+        gap: 8px;
+    }
+
+    .userIconDiv {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+    }
+
+    .dropDown {
+        top: 53px;
+        right: 12px;
+        width: min(230px, calc(100vw - 24px));
+    }
+
+    .chatInput {
+        width: calc(100% - 20px);
+        padding-top: 8px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+
+    .inputBox {
+        min-height: 54px;
+        padding: 6px 8px 6px 14px;
+        border-radius: 16px;
+    }
+
+    .inputBox input {
+        font-size: 16px;
+    }
+
+    #submit {
+        width: 40px;
+        height: 40px;
+    }
+
+    .info {
+        font-size: 9px;
+        padding-top: 8px;
+    }
+
+    .chatError {
+        width: calc(100% - 24px);
+    }
+}
+/* Hide hamburger on desktop */
+.mobileMenuButton {
+    display: none !important;
+}
+
+@media (max-width: 700px) {
+    .mobileMenuButton {
+        display: flex !important;
+    }
+}

@@ -7,7 +7,7 @@ import SparkleIcon from "./SparkleIcon.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-function Sidebar() {
+function Sidebar({ isOpen = false, onClose = () => {} }) {
     const {
         allThreads,
         currThreadId,
@@ -25,8 +25,18 @@ function Sidebar() {
     const [deletingThread, setDeletingThread] = useState(null);
     const [error, setError] = useState("");
 
+    // Create new conversation
+    const handleNewChat = () => {
+        createNewChat();
+        onClose();
+    };
+
+    // Load existing conversation
     const changeThread = async (threadId) => {
-        if (threadId === currThreadId || loadingThread) return;
+        if (threadId === currThreadId || loadingThread) {
+            onClose();
+            return;
+        }
 
         try {
             setLoadingThread(true);
@@ -38,7 +48,9 @@ function Sidebar() {
             );
 
             if (response.status === 401) {
-                throw new Error("Your session has expired. Please sign in again.");
+                throw new Error(
+                    "Your session has expired. Please sign in again."
+                );
             }
 
             if (!response.ok) {
@@ -52,6 +64,8 @@ function Sidebar() {
             setPrompt("");
             setReply(null);
             setNewChat(false);
+
+            onClose();
         } catch (err) {
             console.error("Change Thread Error:", err);
             setError(err.message);
@@ -60,6 +74,7 @@ function Sidebar() {
         }
     };
 
+    // Delete conversation
     const deleteThread = async (e, threadId) => {
         e.stopPropagation();
 
@@ -84,7 +99,9 @@ function Sidebar() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || "Failed to delete conversation");
+                throw new Error(
+                    data.error || "Failed to delete conversation"
+                );
             }
 
             if (fetchThreads) {
@@ -106,145 +123,189 @@ function Sidebar() {
     const initial = displayName.charAt(0).toUpperCase();
 
     return (
-        <aside className="sidebar">
-            <div className="sidebarHeader">
-                <div className="sidebarBrand">
-                    <span className="sidebarBrandIcon">
-                        <SparkleIcon size={23} />
-                    </span>
-                    <span>LUMORA</span>
+        <>
+            {/* Mobile backdrop */}
+            {isOpen && (
+                <button
+                    type="button"
+                    className="mobileSidebarBackdrop"
+                    onClick={onClose}
+                    aria-label="Close navigation menu"
+                />
+            )}
+
+            {/* Original LUMORA Sidebar */}
+            <aside className={`sidebar ${isOpen ? "sidebarOpen" : ""}`}>
+
+                {/* Sidebar Header */}
+                <div className="sidebarHeader">
+                    <div className="sidebarBrand">
+                        <span className="sidebarBrandIcon">
+                            <SparkleIcon size={23} />
+                        </span>
+
+                        <span>LUMORA</span>
+                    </div>
+
+                    <div className="sidebarHeaderActions">
+                        <button
+                            type="button"
+                            className="mobileSidebarClose"
+                            onClick={onClose}
+                            aria-label="Close sidebar"
+                        >
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <button
+                            type="button"
+                            className="sidebarHeaderButton"
+                            onClick={handleNewChat}
+                            title="New chat"
+                            aria-label="New chat"
+                        >
+                            <i className="fa-regular fa-pen-to-square"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <button
-                    className="sidebarHeaderButton"
-                    onClick={createNewChat}
-                    title="New chat"
-                    aria-label="New chat"
-                >
-                    <i className="fa-regular fa-pen-to-square"></i>
-                </button>
-            </div>
-
-            <nav className="sidebarNavigation">
-                <button
-                    className="sidebarNavItem activeNavItem"
-                    onClick={createNewChat}
-                >
-                    <i className="fa-regular fa-pen-to-square"></i>
-                    <span>New chat</span>
-                </button>
-
-                <button
-                    className="sidebarNavItem"
-                    onClick={() => {
-                        document.querySelector(".historyContainer")
-                            ?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                >
-                    <i className="fa-regular fa-clock"></i>
-                    <span>Recent chats</span>
-                </button>
-
-                <button
-                    className="sidebarNavItem"
-                    type="button"
-                    title="Projects are coming soon"
-                    disabled
-                >
-                    <i className="fa-solid fa-folder-open"></i>
-                    <span>Projects</span>
-                    <span className="comingSoon">Soon</span>
-                </button>
-
-                <button
-                    className="sidebarNavItem"
-                    type="button"
-                    title="Explore features coming soon"
-                    disabled
-                >
-                    <i className="fa-solid fa-compass"></i>
-                    <span>Explore</span>
-                    <span className="comingSoon">Soon</span>
-                </button>
-            </nav>
-
-            <div className="sidebarProjects">
-                <div className="sidebarSectionHeading">
-                    <span>Projects</span>
+                {/* Navigation */}
+                <nav className="sidebarNavigation">
                     <button
                         type="button"
-                        title="Projects coming soon"
+                        className="sidebarNavItem activeNavItem"
+                        onClick={handleNewChat}
+                    >
+                        <i className="fa-regular fa-pen-to-square"></i>
+                        <span>New chat</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className="sidebarNavItem"
+                        onClick={() => {
+                            document.querySelector(".historyContainer")
+                                ?.scrollIntoView({ behavior: "smooth" });
+                        }}
+                    >
+                        <i className="fa-regular fa-clock"></i>
+                        <span>Recent chats</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        className="sidebarNavItem"
+                        title="Projects are coming soon"
                         disabled
                     >
-                        <i className="fa-solid fa-plus"></i>
+                        <i className="fa-solid fa-folder-open"></i>
+                        <span>Projects</span>
+                        <span className="comingSoon">Soon</span>
                     </button>
-                </div>
 
-                <p className="emptyProjects">No projects yet</p>
-            </div>
+                    <button
+                        type="button"
+                        className="sidebarNavItem"
+                        title="Explore features coming soon"
+                        disabled
+                    >
+                        <i className="fa-solid fa-compass"></i>
+                        <span>Explore</span>
+                        <span className="comingSoon">Soon</span>
+                    </button>
+                </nav>
 
-            <div className="historyContainer">
-                <div className="sidebarSectionHeading">
-                    <span>Recents</span>
-                </div>
+                {/* Projects */}
+                <div className="sidebarProjects">
+                    <div className="sidebarSectionHeading">
+                        <span>Projects</span>
 
-                {error && <p className="sidebarError">{error}</p>}
-
-                {loadingThread && (
-                    <p className="sidebarStatus">Loading conversation...</p>
-                )}
-
-                <ul className="history">
-                    {allThreads?.map((thread) => (
-                        <li
-                            key={thread.threadId}
-                            onClick={() => changeThread(thread.threadId)}
-                            className={
-                                thread.threadId === currThreadId
-                                    ? "highlighted"
-                                    : ""
-                            }
-                            title={thread.title || "New Chat"}
+                        <button
+                            type="button"
+                            title="Projects coming soon"
+                            disabled
                         >
-                            <i className="fa-regular fa-message threadIcon"></i>
+                            <i className="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
 
-                            <span className="threadTitle">
-                                {thread.title || "New Chat"}
-                            </span>
-
-                            <button
-                                className="deleteBtn"
-                                title="Delete conversation"
-                                aria-label="Delete conversation"
-                                disabled={deletingThread === thread.threadId}
-                                onClick={(e) => deleteThread(e, thread.threadId)}
-                            >
-                                <i className="fa-solid fa-trash"></i>
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-
-                {allThreads?.length === 0 && !loadingThread && (
-                    <p className="sidebarStatus">
-                        Your conversations will appear here.
-                    </p>
-                )}
-            </div>
-
-            <div className="sidebarProfile">
-                <div className="profileAvatar">{initial}</div>
-
-                <div className="profileDetails">
-                    <strong>{displayName}</strong>
-                    <span>{user?.email || "LUMORA User"}</span>
+                    <p className="emptyProjects">No projects yet</p>
                 </div>
 
-                <span className="profileMore" title="Signed in">
-                    <i className="fa-solid fa-circle-check"></i>
-                </span>
-            </div>
-        </aside>
+                {/* Conversation History */}
+                <div className="historyContainer">
+                    <div className="sidebarSectionHeading">
+                        <span>Recents</span>
+                    </div>
+
+                    {error && (
+                        <p className="sidebarError">{error}</p>
+                    )}
+
+                    {loadingThread && (
+                        <p className="sidebarStatus">
+                            Loading conversation...
+                        </p>
+                    )}
+
+                    <ul className="history">
+                        {allThreads?.map((thread) => (
+                            <li
+                                key={thread.threadId}
+                                onClick={() => changeThread(thread.threadId)}
+                                className={
+                                    thread.threadId === currThreadId
+                                        ? "highlighted"
+                                        : ""
+                                }
+                                title={thread.title || "New Chat"}
+                            >
+                                <i className="fa-regular fa-message threadIcon"></i>
+
+                                <span className="threadTitle">
+                                    {thread.title || "New Chat"}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    className="deleteBtn"
+                                    title="Delete conversation"
+                                    aria-label="Delete conversation"
+                                    disabled={
+                                        deletingThread === thread.threadId
+                                    }
+                                    onClick={(e) =>
+                                        deleteThread(e, thread.threadId)
+                                    }
+                                >
+                                    <i className="fa-solid fa-trash"></i>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    {allThreads?.length === 0 && !loadingThread && (
+                        <p className="sidebarStatus">
+                            Your conversations will appear here.
+                        </p>
+                    )}
+                </div>
+
+                {/* User Profile */}
+                <div className="sidebarProfile">
+                    <div className="profileAvatar">{initial}</div>
+
+                    <div className="profileDetails">
+                        <strong>{displayName}</strong>
+                        <span>{user?.email || "LUMORA User"}</span>
+                    </div>
+
+                    <span className="profileMore" title="Signed in">
+                        <i className="fa-solid fa-circle-check"></i>
+                    </span>
+                </div>
+            </aside>
+        </>
     );
 }
 

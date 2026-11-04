@@ -15,7 +15,7 @@ const defaultPreferences = {
     preferredLanguage: "English"
 };
 
-function ChatWindow() {
+function ChatWindow({ onMenuClick }) {
     const {
         prompt,
         setPrompt,
@@ -217,6 +217,17 @@ function ChatWindow() {
 
             {/* Navbar */}
             <div className="navbar">
+
+                {/* Mobile Hamburger Menu */}
+                <button
+                    type="button"
+                    className="mobileMenuButton"
+                    onClick={onMenuClick}
+                    aria-label="Open navigation menu"
+                >
+                    <i className="fa-solid fa-bars"></i>
+                </button>
+
                 <span className="navbarLogo">
                     <span className="logoMark">
                         <SparkleIcon size={21} />

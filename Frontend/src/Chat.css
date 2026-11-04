@@ -349,3 +349,64 @@
     display: block;
     color: #ffffff;
 }
+
+
+@media (max-width: 700px) {
+    .chat {
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .chats {
+        width: calc(100% - 28px);
+        gap: 19px;
+        padding: 22px 0 24px;
+    }
+
+    .welcomeScreen {
+        width: calc(100% - 30px);
+        padding: 22px 0;
+    }
+
+    .welcomeScreen h1 {
+        font-size: 27px;
+        letter-spacing: -0.8px;
+    }
+
+    .welcomeSubtitle {
+        font-size: 12px;
+    }
+
+    .suggestionGrid {
+        grid-template-columns: 1fr;
+        gap: 9px;
+        margin-top: 23px;
+    }
+
+    .suggestionCard {
+        min-height: 65px;
+        padding: 12px;
+    }
+
+    .userMessage {
+        max-width: 90%;
+        padding: 11px 14px;
+        font-size: 14px;
+    }
+
+    .gptDiv {
+        font-size: 14px;
+        line-height: 1.75;
+    }
+
+    .gptDiv pre {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .gptDiv table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
