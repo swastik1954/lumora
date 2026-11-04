@@ -1,47 +1,47 @@
 
 import "./App.css";
-
-import {
-    useState,
-    useEffect,
-    useCallback,
-    useMemo
-} from "react";
-
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import Sidebar from "./Sidebar.jsx";
 import ChatWindow from "./ChatWindow.jsx";
+import Auth from "./auth.jsx";
 import { MyContext } from "./MyContext.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 function App() {
-    // Chat state
+    const [user, setUser] = useState(null);
+    const [authLoading, setAuthLoading] = useState(true);
+    const [showUpgrade, setShowUpgrade] = useState(false);
+
     const [prompt, setPrompt] = useState("");
     const [reply, setReply] = useState(null);
-
-    // Thread state
     const [currThreadId, setCurrThreadId] = useState(() => uuidv4());
     const [prevChats, setPrevChats] = useState([]);
     const [allThreads, setAllThreads] = useState([]);
-
-    // UI state
     const [newChat, setNewChat] = useState(true);
-    const [loadingThreads, setLoadingThreads] = useState(true);
+    const [loadingThreads, setLoadingThreads] = useState(false);
     const [error, setError] = useState(null);
 
-    // Fetch all conversations
+    // Fetch conversations belonging to the current user.
     const fetchThreads = useCallback(async () => {
         try {
-            const response = await fetch(`${API_URL}/api/thread`);
+            const response = await fetch(`${API_URL}/api/thread`, {
+                credentials: "include"
+            });
+
+            if (response.status === 401) {
+                setUser(null);
+                setAllThreads([]);
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error("Failed to fetch chat history");
             }
 
             const data = await response.json();
-
             setAllThreads(data);
             setError(null);
         } catch (err) {
@@ -52,12 +52,89 @@ function App() {
         }
     }, []);
 
-    // Fetch history once when the application starts
+    // Check existing login or guest session.
     useEffect(() => {
-        fetchThreads();
+        let active = true;
+
+        const checkSession = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/auth/me`, {
+                    credentials: "include"
+                });
+
+                if (!response.ok) {
+                    if (active) setUser(null);
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (active) {
+                    setUser(data.user);
+                    setLoadingThreads(true);
+                    await fetchThreads();
+                }
+            } catch (err) {
+                console.error("Session check failed:", err);
+                if (active) setUser(null);
+            } finally {
+                if (active) setAuthLoading(false);
+            }
+        };
+
+        checkSession();
+
+        return () => {
+            active = false;
+        };
     }, [fetchThreads]);
 
-    // Start a new conversation
+    // Called after login, signup, or guest access.
+    const handleAuthenticated = (authenticatedUser) => {
+        setUser(authenticatedUser);
+        setAllThreads([]);
+        setPrevChats([]);
+        setPrompt("");
+        setReply(null);
+        setCurrThreadId(uuidv4());
+        setNewChat(true);
+        setLoadingThreads(true);
+        setShowUpgrade(false);
+
+        fetchThreads();
+    };
+
+    // Called after upgrading a guest account.
+    // Keep the existing conversations and current chat intact.
+    const handleUpgradeComplete = async (updatedUser) => {
+        setUser(updatedUser);
+        setShowUpgrade(false);
+        await fetchThreads();
+    };
+
+    // Logout.
+    const logout = async () => {
+        try {
+            await fetch(`${API_URL}/api/auth/logout`, {
+                method: "POST",
+                credentials: "include"
+            });
+        } catch (err) {
+            console.error("Logout error:", err);
+        } finally {
+            setUser(null);
+            setAllThreads([]);
+            setPrevChats([]);
+            setPrompt("");
+            setReply(null);
+            setCurrThreadId(uuidv4());
+            setNewChat(true);
+            setShowUpgrade(false);
+            setError(null);
+        }
+    };
+
+    // Create a new conversation.
     const createNewChat = useCallback(() => {
         setCurrThreadId(uuidv4());
         setPrevChats([]);
@@ -66,7 +143,11 @@ function App() {
         setNewChat(true);
     }, []);
 
-    // Shared context
+    // Open account upgrade screen.
+    const startAccountUpgrade = () => {
+        setShowUpgrade(true);
+    };
+
     const providerValues = useMemo(() => ({
         prompt,
         setPrompt,
@@ -83,7 +164,10 @@ function App() {
         loadingThreads,
         error,
         fetchThreads,
-        createNewChat
+        createNewChat,
+        user,
+        logout,
+        startAccountUpgrade
     }), [
         prompt,
         reply,
@@ -94,8 +178,37 @@ function App() {
         loadingThreads,
         error,
         fetchThreads,
-        createNewChat
+        createNewChat,
+        user
     ]);
+
+    if (authLoading) {
+        return (
+            <div className="authLoadingScreen">
+                <div className="authLoadingLogo">LUMORA</div>
+                <p>Preparing your workspace...</p>
+            </div>
+        );
+    }
+
+    // Guest clicks "Save my conversations".
+    if (user?.isGuest && showUpgrade) {
+        return (
+            <Auth
+                initialSignup={true}
+                onAuthenticated={handleUpgradeComplete}
+            />
+        );
+    }
+
+    // Login or signup screen for users without a session.
+    if (!user) {
+        return (
+            <Auth
+                onAuthenticated={handleAuthenticated}
+            />
+        );
+    }
 
     return (
         <div className="app">

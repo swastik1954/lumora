@@ -360,3 +360,328 @@
         width: calc(100% - 24px);
     }
 }
+
+.dropDownItem {
+    width: 100%;
+    text-align: left;
+    font: inherit;
+}
+
+button.dropDownItem {
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    background: transparent;
+}
+
+button.dropDownItem:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* =========================================
+   SETTINGS MODAL
+========================================= */
+
+.settingsOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+}
+
+.settingsModal {
+    width: min(460px, 100%);
+    overflow: hidden;
+
+    border: 1px solid rgba(130, 165, 220, 0.2);
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            ellipse at top right,
+            rgba(44, 100, 190, 0.15),
+            transparent 55%
+        ),
+        #111827;
+
+    box-shadow: 0 25px 90px rgba(0, 0, 0, 0.55);
+
+    animation: settingsAppear 0.2s ease;
+}
+
+@keyframes settingsAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.settingsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 23px 24px 19px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.settingsHeader h2 {
+    margin: 0;
+
+    color: #f1f5ff;
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.settingsHeader p {
+    margin: 6px 0 0;
+
+    color: #8794aa;
+    font-size: 12px;
+}
+
+.settingsClose {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: #aebbd0;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.settingsClose:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+}
+
+.settingsContent {
+    padding: 23px 24px;
+}
+
+.settingsSectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #e8efff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.settingsSectionTitle i {
+    color: #78aaff;
+    font-size: 17px;
+}
+
+.settingsDescription {
+    margin: 9px 0 22px;
+
+    color: #8794aa;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.settingsLabel {
+    display: block;
+    margin: 17px 0 8px;
+
+    color: #cbd5e5;
+    font-size: 12px;
+    font-weight: 550;
+}
+
+.settingsSelect {
+    width: 100%;
+    height: 45px;
+
+    padding: 0 13px;
+
+    border: 1px solid rgba(130, 165, 220, 0.2);
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #182235;
+    color: #e8efff;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.settingsSelect:focus {
+    border-color: #528ff0;
+    box-shadow: 0 0 0 3px rgba(65, 125, 230, 0.12);
+}
+
+.settingsSelect:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.settingsSelect option {
+    background: #182235;
+    color: #e8efff;
+}
+
+.languageHelp {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin-top: 19px;
+    padding: 12px;
+
+    border: 1px solid rgba(82, 143, 240, 0.16);
+    border-radius: 10px;
+
+    background: rgba(52, 105, 190, 0.09);
+
+    color: #a9c8ff;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.languageHelp i {
+    margin-top: 2px;
+}
+
+.settingsLoading {
+    min-height: 130px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    color: #aebbd0;
+    font-size: 12px;
+}
+
+.settingsMessage {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 15px;
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+}
+
+.settingsError {
+    border: 1px solid rgba(255, 100, 100, 0.2);
+    background: rgba(150, 40, 40, 0.12);
+    color: #ffaaaa;
+}
+
+.settingsSuccess {
+    border: 1px solid rgba(70, 190, 130, 0.2);
+    background: rgba(40, 150, 100, 0.1);
+    color: #8ce0b3;
+}
+
+.settingsFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding: 16px 24px 21px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.settingsCancel,
+.settingsSave {
+    min-height: 39px;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 550;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.settingsCancel {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #c2ccdc;
+}
+
+.settingsCancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.settingsSave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid rgba(91, 151, 255, 0.35);
+
+    background: linear-gradient(145deg, #3989ff, #1856c5);
+
+    color: white;
+
+    box-shadow: 0 4px 15px rgba(39, 112, 235, 0.2);
+}
+
+.settingsSave:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(39, 112, 235, 0.35);
+}
+
+.settingsSave:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 500px) {
+    .settingsOverlay {
+        padding: 13px;
+    }
+
+    .settingsHeader,
+    .settingsContent {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .settingsFooter {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}

@@ -32,3 +32,26 @@ button {
         flex-direction: column;
     }
 }
+
+.authLoadingScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: #08090d;
+    color: #9295a3;
+    font-size: 13px;
+}
+
+.authLoadingLogo {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 750;
+    letter-spacing: 3px;
+}
+
+.authLoadingScreen p {
+    margin: 0;
+}
